@@ -1,5 +1,4 @@
 (ns ballet-injury-prediction.outliers
-  (:import [java.lang Integer])
   (:require [clojure.core.matrix :as m]))
 
 (defn quantile [xs q]
