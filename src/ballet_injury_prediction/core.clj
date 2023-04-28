@@ -45,3 +45,21 @@
 
 (def ballet-data-numeric-standardized (s/standardize ballet-data-numeric-vectors))
 (println ballet-data-numeric-standardized)
+
+(defn create-data-partition [data p]
+  (let [n (count data)
+        size (int (* n p))
+        shuffled-data (shuffle data)]
+    {:train (subvec shuffled-data 0 size)
+     :test (subvec shuffled-data size n)}))
+(defn transpose-vectors [vectors]
+  (let [matrix (vec vectors)]
+    (->> matrix
+         (apply mapv vector)
+         (mapv vec))))
+(def ballet-data-numeric-standardized-trans (transpose-vectors ballet-data-numeric-standardized))
+
+(def split (create-data-partition ballet-data-numeric-standardized-trans 0.8))
+
+(println "Training data:" (:train split))
+(println "Test data:" (:test split))
