@@ -58,7 +58,8 @@
          (apply mapv vector)
          (mapv vec))))
 (def ballet-data-numeric-standardized-trans (transpose-vectors ballet-data-numeric-standardized))
-(def split (create-data-partition ballet-data-numeric-standardized-trans 0.8))
+
+(def split (create-data-partition ballet-data-numeric-standardized-trans 0.7))
 
 (println "Training data:" (:train split))
 (println "Test data:" (:test split))
@@ -86,8 +87,17 @@
 
 (println transformed-test-data-without-class)
 
+(defn euclidean-distance [first-vector second-vector]
+  (Math/sqrt (reduce + (map #(* % %) (map - first-vector second-vector)))))
 
+(defn nearest-neighbors [train-data new-data k]
+  (take k
+        (sort-by :distance
+                 (map #(assoc % :distance (euclidean-distance (:attributes %) new-data)) train-data))))
 
-
-
+(defn knn [train-data new-data k]
+  (let [nearest-neighbors (nearest-neighbors train-data new-data k)
+        classes (map :injury-risk nearest-neighbors)
+        frequencies (frequencies classes)]
+    (first (first (sort-by val > frequencies)))))
 
