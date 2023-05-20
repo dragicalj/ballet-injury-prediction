@@ -58,8 +58,36 @@
          (apply mapv vector)
          (mapv vec))))
 (def ballet-data-numeric-standardized-trans (transpose-vectors ballet-data-numeric-standardized))
-
 (def split (create-data-partition ballet-data-numeric-standardized-trans 0.8))
 
 (println "Training data:" (:train split))
 (println "Test data:" (:test split))
+
+(defn transform-data [data]
+  (mapv (fn [sample]
+          (let [attributes (subvec sample 0 7)
+                injury-risk (if (= (nth sample 7) -1) :no :yes)]
+            {:attributes attributes
+             :injury-risk injury-risk}))
+        data))
+
+(def transformed-train-data (transform-data (:train split)))
+(def transformed-test-data (transform-data (:test split)))
+
+(println transformed-train-data)
+
+(println transformed-test-data)
+
+(defn transform-data-without-class [data]
+  (map #(hash-map :attributes (:attributes %)) data))
+
+(def transformed-test-data-without-class
+  (transform-data-without-class transformed-test-data))
+
+(println transformed-test-data-without-class)
+
+
+
+
+
+
