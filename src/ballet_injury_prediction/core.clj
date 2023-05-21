@@ -3,7 +3,8 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [ballet-injury-prediction.outliers :as o]
-            [ballet-injury-prediction.standardization :as s]))
+            Implemented calculation of evaluation metrics            [ballet-injury-prediction.standardization :as s]
+            [ballet-injury-prediction.evalmetrics :as e]))
 
 (defn load-csv [file]
   (with-open [reader (io/reader file)]
@@ -115,3 +116,14 @@
       (println "There is a potential risk of injury for this ballet dancer. It is recommended not to perform this week.")
       (println "There is no apparent risk of injury for this ballet dancer. Feel free to perform."))
     (println "----------------------------------------------")))
+
+(def actual (map :injury-risk transformed-test-data))
+
+(println actual)
+
+(def predicted
+  (map #(knn train-data (:attributes %) 3) test-data))
+
+(println predicted)
+
+(e/compute-eval-metrics actual predicted)
