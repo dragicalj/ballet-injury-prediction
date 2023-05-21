@@ -101,3 +101,17 @@
         frequencies (frequencies classes)]
     (first (first (sort-by val > frequencies)))))
 
+(def train-data transformed-train-data)
+(def test-data transformed-test-data-without-class)
+
+(doseq [ballet-dancer test-data]
+  (let [k 3
+        predicted-class (knn train-data (:attributes ballet-dancer) k)]
+    (println "Ballet dancer characteristics:")
+    (println ballet-dancer)
+    (println "----------------------------------------------")
+    (println "Prediction:")
+    (if (= predicted-class :yes)
+      (println "There is a potential risk of injury for this ballet dancer. It is recommended not to perform this week.")
+      (println "There is no apparent risk of injury for this ballet dancer. Feel free to perform."))
+    (println "----------------------------------------------")))
