@@ -3,7 +3,7 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [ballet-injury-prediction.outliers :as o]
-            Implemented calculation of evaluation metrics            [ballet-injury-prediction.standardization :as s]
+            [ballet-injury-prediction.standardization :as s]
             [ballet-injury-prediction.evalmetrics :as e]))
 
 (defn load-csv [file]
